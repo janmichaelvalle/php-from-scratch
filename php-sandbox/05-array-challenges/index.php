@@ -33,7 +33,7 @@ echo '<h3>Colors Array</h3>';
 $colors = ['red', 'blue', 'green', 'yellow'];
 
 // Reverse the colors array
-array_reverse($colors);
+$colors = array_reverse($colors);
 // Add purple and orange
 array_push($colors, 'purple', 'orange');
 // Replace second color with pink
@@ -41,8 +41,8 @@ $colors[1] = 'pink';
 // Remove last element of the array
 array_pop($colors);
 
-
-var_dump($colors);
+print_r($colors);
+// var_dump($colors);
 
 /*
   Challenge 3: Job listings array
@@ -53,4 +53,52 @@ var_dump($colors);
   4. Print out the first skill of the third job listing in the array.
 */
 
+
+
 echo '<h3>Job Listings</h3>';
+
+$jobListings = [
+  ['id' => 1, 
+  'job_title' => 'PHP Developer',
+  'company' => 'Alfafusion', 
+  'contact_email' => 'hello@af.com', 
+  'contact_phone' => 1234556, 
+  ['skills' => ['PHP', 'Laravel', 'MySQL']], 
+],
+  ['id' => 2, 
+  'job_title' => 'Python Developer',
+  'company' => 'Locad', 
+  'contact_email' => 'hello@af.com', 
+  'contact_phone' => 1234556, 
+  'skills' => ['PHP', 'Laravel', 'MySQL'], 
+  ]
+  ];
+
+array_push($jobListings, 
+['id' => 3, 
+'job_title' => 'Laravel Developer',
+'company' => 'Cafe24', 
+'contact_email' => 'hello@cafe24.com', 
+'contact_phone' => 1234556, 
+'skills' => ['PHP', 'Laravel', 'MySQL'], 
+]);
+
+
+echo "Array:<br>";
+// var_dump($jobListings);
+print_r($jobListings);
+echo ('<br>');
+echo ('<br>');
+
+
+echo ('Print out the job_title of the second job listing in the array: ');
+echo ('<br>');
+echo ($jobListings[1]['job_title']);
+
+echo ('<br>');
+echo ('<br>');
+echo ('Print out the first skill of the third job listing in the array: ');
+echo ('<br>');
+echo ($jobListings[2]['skills'][0]);
+
+

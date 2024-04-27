@@ -64,7 +64,14 @@ $listings = [
     <!-- Output -->
     <?php foreach($listings as $listing) : ?>
       <div class="md my-4">
-      <div class="bg-white rounded-lg shadow-md">
+      <?php 
+      if ($listing['id'] % 2 === 0) {
+        $background = 'bg-blue-100';
+      } else {
+        $background = 'bg-white'; 
+      } ?>
+        <div class="
+        <?= "{$background} rounded-lg shadow-md" ?>">
         <div class="p-4">
           <h2 class="text-xl font-semibold">
             <?= $listing['title']?>

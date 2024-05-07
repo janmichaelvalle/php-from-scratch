@@ -1,54 +1,57 @@
 <?php
 
-$fruits = [
-    ['Apple', 'Red'],
-    ['Orange', 'Orange'],
-    ['Banana', 'Yellow']
-];
+abstract class Shape {
+    protected $name;
 
-$output = $fruits[0][0];
+    // Abstract method
+    abstract public function calculateArea();
 
-$users = [
-    ['name' => 'John', 'email' => 'john@gmail.com', 'password' => '123456'],
-    ['name' => 'Jane', 'email' => 'jane@gmail.com', 'password' => '123456'],
-    ['name' => 'Jack', 'email' => 'jack@gmail.com', 'password' => '123456'],
-];
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
 
-$output = $users[1]['email'];
+    // Concrete method
+    public function getName() {
+        return $this->name;
+    }
+}
 
+class Circle extends Shape {
+    private $radius;
 
-var_dump($output); 
+    public function __construct($name, $radius)
+    {
+        parent::__construct($name);
+        $this->radius = $radius;
+    }
 
+    public function calculateArea()
+    {
+        return pi() * pow($this->radius, 2);
+    }
+}
 
-?>
+class Rectangle extends Shape {
+    private $height;
+    private $width;
 
+    public function __construct($name, $width, $height)
+    {
+        parent::__construct($name);
+        $this->width = $width;
+        $this->height = $height;
+    }
 
+    public function calculateArea()
+    {
+        return $this->width * $this->height;
+    }
+}
 
-<!DOCTYPE html>
-<html lang="en">
+$circle = new Circle('Circle1', 5);
+var_dump($circle);
+$rectangle = new Rectangle('Rect1', 10, 5);
+var_dump($rectangle);
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Hello</title>
-</head>
-
-<body class="bg-gray-100">
-    <header class="bg-blue-500 text-white p-4">
-        <div class="container mx-auto">
-            <h1 class="text-3xl font-semibold"><?= $fullName ?></h1>
-        </div>
-    </header>
-    <div class="container mx-auto p-4 mt-4">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <p>
-                <pre>
-                    <?php print_r($users)?>
-                </pre>
-            </p>
-        </div>
-    </div>
-</body>
-
-</html>
+echo $circle->getName() . 'Area: ' . $circle->calculateArea() . '<br>';

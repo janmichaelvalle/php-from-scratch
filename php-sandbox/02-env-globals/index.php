@@ -5,13 +5,17 @@
   $host = getenv('DB_HOST');
   $user = getenv('DB_USER');
 
-  $foo = 'Global variable';
+  $foo = 'Foo Global';
 
   function test () {
-    $foo = 'Local variable';
-    echo 'Global variable' 
+    $foo = 'Foo Local';
+    echo 'Global variable ' . $GLOBALS['foo'] . '<br>'; 
+    echo 'Local variable ' . $foo;
   }
 
+  $foo = 'Hello';
+
+  test();
 
 ?>
 

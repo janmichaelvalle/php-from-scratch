@@ -2,13 +2,27 @@
 $title = '';
 $description = '';
 $submitted = false;
-$error = false;
 
+/* 
+Create an messages array and dipslay them in the UI.
+Create an array with the text and color you want to display.
+Add validation for the title and description. 
+*/
+$messages = [];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
   $title = htmlspecialchars($_POST['title'] ?? '');
   $description = htmlspecialchars($_POST['description'] ?? '');
+  if (empty($title)) {
+    $messages[] = ['text' => 'Title is required', 'color' => 'text-red-500'];
+    $submitted = false;
+  }
+
+  if (empty($description)) {
+    $messages[] = ['text' => 'Description is required', 'color' => 'text-red-500'];
+    $submitted = false;
+  }
 
 
   $file = $_FILES['logo'];
@@ -33,16 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     if (in_array($fileExtension, $allowedExtensions)) {
       // Upload file
       if (move_uploaded_file($file['tmp_name'], $uploadDir .  $filename)) {
-        echo 'File Uploaded!';
+        $messages[] = ['text' => 'File uploaded successfully', 'color' => 'text-green-500'];
+        $submitted = true;
       } else {
-        echo 'File Upload Error: ' . $file['error'];
+        $messages[] = ['text' => 'File Upload Error', 'color' => 'text-red-500'];
       }
     } else {
-      echo 'Invalid File Type';
+      $messages[] = ['text' => 'File must be an image', 'color' => 'text-red-500'];
+
     }
   }
 
-  $submitted = true;
 }
 ?>
 
@@ -60,16 +75,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
   <div class="flex justify-center items-center h-screen">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
       <h1 class="text-2xl font-semibold mb-6">Create Job Listing</h1>
+      <?php foreach ($messages as $message) : ?>
+        <p class="<?= $message['color']?>"> 
+          <?= $message['text']?>
+        </p>
+        <?php endforeach; ?>
+      
       <form method="post" enctype="multipart/form-data">
-     <!--  -->
-      <?php if ($submitted) : ?>
-        <div class="mt-6 p-4 border rounded bg-gray-200">
-          <h2 class="text-lg font-semibold">Submitted Job Listing:</h2>
-          <p><strong>Title:</strong> <?= $title ?></p>
-          <p><strong>Description:</strong> <?= $description ?></p>
-        </div>
-      <?php endif; ?>
-      <!--  -->
         <div class="mb-4">
           <label for="title" class="block text-gray-700 font-medium">Title</label>
           <input type="text" id="title" name="title" placeholder="Enter job title" class="w-full px-4 py-2 border rounded focus:ring focus:ring-blue-300 focus:outline-none" value="<?= $title ?>">

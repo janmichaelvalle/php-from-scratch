@@ -5,4 +5,4 @@ CREATE TABLE posts(
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO posts (title, body) VALUES ('Post One', 'This is post one');
+INSERT INTO posts (title, body) VALUES ('Post Three', 'This is post 3'), ('Post Four', 'This is post 4');

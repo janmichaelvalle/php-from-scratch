@@ -6,10 +6,24 @@
         "enableSsl": "Disabled"
       },
       "previewLimit": 50,
+      "server": "workopia.cdyqaee6e3iy.ap-southeast-1.rds.amazonaws.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "Amazon RDS",
+      "username": "admin",
+      "password": "admin001",
+      "database": "workopia"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
       "server": "localhost",
       "port": 3306,
       "driver": "MySQL",
-      "database": "workopia",
+      "database": "blog",
       "username": "admin",
       "password": "admin",
       "name": "MySQL Local"

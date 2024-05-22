@@ -1,27 +1,24 @@
-<?php 
+<?php
 
+// Database configuration
+$host = 'localhost';
+$port = 3306;
+$dbName = 'blog';
+$username = 'root';
+$password = '';
 
-class Database {
-  public $conn;
+// Connection string (DSN)
+$dsn = "mysql:host={$host};port={$port};dbname={$dbName};charset=utf8";
 
-  /**
-   * Constructor for Database class
-   * 
-   * @param array $config
-   */
-  public function __construct(($config))
-  {
-    $dsn = "mysql:host={$config['host]};port={$config['port']};dbname={$config['dbname]}";
+try {
+  // Create a PDO instance
+  $pdo = new PDO($dsn, $username, $password);
 
-    $options = [
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ];
+  // Set PDO to throw exceptions on error
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    try {
-      this->conn = new PDO($dsn, $config['username'], $config['password']);
-    } catch(PDOException $e) {
-      throw new Exception("Database connection failed: {$e->getMessage()}");
-
-    }
-  }
+  $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+  // If there is an error with the connection, catch it here
+  echo "Connection failed: " . $e->getMessage();
 }

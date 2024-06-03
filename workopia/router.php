@@ -83,7 +83,7 @@ class Router {
   public function route($uri, $method){
     foreach($this->routes as $route){
       if($route['uri'] === $uri && $route['method'] === $method){
-        echo "Matched route: " . $route['uri'] . " with method: " . $route['method'];
+        echo "Matched route: " . $route['uri'] . " with method: " . $route['method'] . "<br>";
         require basePath($route['controller']);
         return;
       }

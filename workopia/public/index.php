@@ -12,6 +12,7 @@ require basePath('routes.php');
 
 // Get the current URI and HTTP method
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Debugging: Output the URI and method

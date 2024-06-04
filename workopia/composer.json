@@ -1,0 +1,17 @@
+{
+  "name": "janmichaelvalle/php-from-scratch",
+  "description": "Job listing application",
+  "authors": [
+    {
+    "name": "Jan Michael Valle",
+    "email": "janmichaelvalle@gmail.com"
+  }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  }
+
+}

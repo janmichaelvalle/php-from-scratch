@@ -1,4 +1,7 @@
 <?php
+namespace Framework;
+
+use PDO;
 
 /*
 The Database class provides a simple way to establish a connection to a MySQL database using PDO. The connection details are passed to the constructor in an associative array ($config). If the connection is successful, a PDO instance is stored in the $conn property, and a success message is printed. If the connection fails, an exception is thrown with an appropriate error message. 

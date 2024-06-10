@@ -80,6 +80,7 @@ class Router {
    */
   public function route($uri){
     $requestMethod = $_SERVER['REQUEST_METHOD'];
+    
     foreach($this->routes as $route){
       // Split the current URI into segments
       $uriSegments = explode('/', trim($uri, '/'));
@@ -89,41 +90,39 @@ class Router {
 
       $match = true;
 
-      // Check if the number of segments matches
-      if(count($uriSegments) === count($routeSegments) && strtoupper($route['method'] === $requestMethod)) {
+      // SEGMENT COUNT & METHOD CHECK: Check if the number  of segments matches
+      if(count($uriSegments) === count($routeSegments) && strtoupper($route['method']) === $requestMethod) {
         $params = [];
         $match = true;
 
+        // SEGMENT BY SEGMENT COMPARISON
         for($i = 0; $i < count($uriSegments); $i++) {
           // If the URI's do not match and there is no param
-          // The argument inside preg_match is looking text inside a parenthesis
-          if($routeSegments[$i] !== $uriSegments[$i] && !preg_match('/\{(.+?)\}/', $routeSegments[$i])) 
+          // The argument inside preg_match is looking text inside a the curly braces
+          if ($routeSegments[$i] !== $uriSegments[$i] && !preg_match('/\{(.+?)\}/', $routeSegments[$i])) 
           {
             $match = false;
             break;
 
           }
-          if(preg_match('/\{(.+?)\}/', $routeSegments[$i], $matches)) {
-            inspectAndDie($matches);
-
+          // Check for the param and add to $params array
+          if (preg_match('/\{(.+?)\}/', $routeSegments[$i], $matches)) {
+            $params[$matches[1]] = $uriSegments[$i];
           }
         }
-      }
-     
-      
-      // if($route['uri'] === $uri && $route['method'] === $method){
-      //   echo "Matched route: " . $route['uri'] . " with method: " . $route['method'] . "<br>";
-      //   // Extract controller and controller method
-      //   $controller = 'App\\Controllers\\' . $route['controller'];
-      //   $controllerMethod = $route['controllerMethod'];
 
-      //   // Instantiate the controller and call the method
-      //   $controllerInstance = new $controller();
-      //   $controllerInstance->$controllerMethod();
-      //   return;
-      // }
+        if($match) {
+        // Extract controller and controller method
+        $controller = 'App\\Controllers\\' . $route['controller'];
+        $controllerMethod = $route['controllerMethod'];
+
+        // Instantiate the controller and call the method
+        $controllerInstance = new $controller();
+        $controllerInstance->$controllerMethod($params);
+        return;          
+        }
+      }
     }
-    // echo "No matched route for URI: " . $uri . " with method: " . $method . "<br>";
     ErrorController::notFound();
   }
 

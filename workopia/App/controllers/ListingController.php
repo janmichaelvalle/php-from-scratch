@@ -73,7 +73,7 @@ class ListingController
 
   public function store()
   {
-    $allowedFields = ['title','description','salary','tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+    $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
 
     $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
 
@@ -81,25 +81,77 @@ class ListingController
 
     $newListingData = array_map('sanitize', $newListingData);
 
-    $requiredFields = ['title', 'description', 'email', 'city', 'state'];
+    $requiredFields = ['title', 'description', 'salary', 'email', 'city', 'state'];
 
     $errors = [];
-    
-    foreach($requiredFields as $field) {
+
+    foreach ($requiredFields as $field) {
       if (empty($newListingData[$field]) || !Validation::string($newListingData[$field])) {
         $errors[$field] = ucfirst($field) . ' is required';
-
-      } 
+      }
     }
-    if(!empty($errors)) {
+    if (!empty($errors)) {
       // Reload view with errors
       loadView('listings/create', [
         'errors' => $errors,
         'listing' => $newListingData
       ]);
+      /* $newListingData array
+          array(12) {
+        ["title"]=>
+        string(4) "Test"
+        ["description"]=>
+        string(6) "Heeyyy"
+        ["salary"]=>
+        string(0) ""
+        ["requirements"]=>
+        string(0) ""
+        ["benefits"]=>
+        string(0) ""
+        ["company"]=>
+        string(0) ""
+        ["address"]=>
+        string(0) ""
+        ["city"]=>
+        string(4) "Test"
+        ["state"]=>
+        string(4) "Test"
+        ["phone"]=>
+        string(0) ""
+        ["email"]=>
+        string(14) "lala@gmail.com"
+        ["user_id"]=>
+        string(1) "1"
+        }  */
+    
     } else {
       // Submit data
-      echo 'Success';
-    }
+        $fields = [];
+        
+        foreach($newListingData as $field => $value) {
+          $fields[] = $field;
+          }
+        
+          $fields = implode(', ', $fields);
+          
+          $values = [];
+
+          foreach($newListingData as $field => $value) {
+            // Convert empty strings to null
+            if($value = '') {
+              $newListingData[$field] = null;
+            }
+            $values[] = ':' . $field;
+          }
+
+          $values = implode(', ' , $values);
+
+          $query = "INSERT INTO listings({$fields}) VALUES ({$values})";
+
+          $this->db->query($query, $newListingData);
+
+          redirect('/listings');
+      }
+
   }
 }

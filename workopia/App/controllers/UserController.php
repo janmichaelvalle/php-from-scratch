@@ -54,8 +54,49 @@ class UserController {
       if(!Validation::email($email)) {
         $errors['email'] = 'Please enter a valid email address';
       }
+
+      if(!Validation::string($name, 2, 50)) {
+        $errors['name'] = 'Name must be between 2 and 50 characters';
+      }
+
+      if(!Validation::string($password, 6, 50)) {
+        $errors['password'] = 'Password must be at least 6 characters';
+      }
+
+      if(!Validation::match($password, $passwordConfirmation)) {
+        $errors['password_confirmation'] = 'Passwords do no match';
+      }
+
+      if(!empty($errors)) {
+        loadView('users/create', [
+          'errors' => $errors,
+          'user' => [
+            'name' => $name,
+            'email' => $email,
+            'city' => $city,
+            'state' => $state,
+          ]
+          ]);
+        exit;
+      } 
+
+      // Check if email exists
+      $params = [
+        'email' => $email
+      ];
+
+      $user = $this->db->query('SELECT * FROM users WHERE email = :email, $params');
+
+      if($user) {
+        $errors['email'] = 'That email already exists';
+        loadView('users/create', [
+          'errors' => $errors
+        ]);
+        exit;
+      }
+
+
       
-      inspectAndDie('Store');
     }
 
 
